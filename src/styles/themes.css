@@ -1,0 +1,39 @@
+[data-theme="brutal-light"] {
+  --color-bg: #fafaf8;
+  --color-surface: #ffffff;
+  --color-border: #0a0a0a;
+  --color-text: #0a0a0a;
+  --color-accent: #ffe93e;
+  --color-accent-text: #0a0a0a;
+  --shadow-brutal: 4px 4px 0px var(--color-border);
+}
+
+[data-theme="brutal-dark"] {
+  --color-bg: #1a2235;
+  --color-surface: #243048;
+  --color-border: #0a0a0a;
+  --color-text: #f0f0f0;
+  --color-accent: #00e5ff;
+  --color-accent-text: #0a0a0a;
+  --shadow-brutal: 4px 4px 0px var(--color-border);
+}
+
+[data-theme="brutal-red"] {
+  --color-bg: #fdf6ec;
+  --color-surface: #ffffff;
+  --color-border: #0a0a0a;
+  --color-text: #0a0a0a;
+  --color-accent: #cc0000;
+  --color-accent-text: #ffffff;
+  --shadow-brutal: 4px 4px 0px var(--color-border);
+}
+
+[data-theme="brutal-blue"] {
+  --color-bg: #eef2ff;
+  --color-surface: #ffffff;
+  --color-border: #0a0a2a;
+  --color-text: #0a0a2a;
+  --color-accent: #ff6600;
+  --color-accent-text: #ffffff;
+  --shadow-brutal: 4px 4px 0px var(--color-border);
+}

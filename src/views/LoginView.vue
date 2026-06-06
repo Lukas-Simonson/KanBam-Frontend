@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/card'
+import { Input } from '@/components/input'
+import { Button } from '@/components/button'
 
 const authStore = useAuthStore()
 
@@ -11,12 +14,12 @@ const errorMessage = ref('')
 async function handleSubmit() {
   try {
     await authStore.login(email.value, password.value)
-  } catch(error) {
+  } catch (error) {
     const code = (error as { response?: { data?: { code?: string } } }).response?.data?.code
     if (code === 'INVALID_CREDENTIALS') {
-      errorMessage.value = "Invalid email or password"
+      errorMessage.value = 'Invalid email or password'
     } else {
-      errorMessage.value = "An error occurred"
+      errorMessage.value = 'An error occurred'
     }
   }
 }
@@ -24,84 +27,42 @@ async function handleSubmit() {
 
 <template>
   <div class="min-h-screen flex items-center justify-center" style="background-color: var(--color-bg)">
-    <div
-      class="w-full max-w-md p-8 border-2"
-      style="
-        background-color: var(--color-surface);
-        border-color: var(--color-border);
-        box-shadow: var(--shadow-brutal);
-      "
-    >
-      <!-- Title -->
-      <h1 class="text-3xl font-black mb-2" style="color: var(--color-text)">KanBam</h1>
-      <p class="text-sm font-bold mb-8" style="color: var(--color-text)">Sign in to your account</p>
+    <Card class="w-full max-w-md">
+      <CardHeader>
+        <CardTitle class="text-3xl font-black">KanBam</CardTitle>
+        <CardDescription>Sign in to your account</CardDescription>
+      </CardHeader>
 
-      <form @submit.prevent="handleSubmit">
+      <CardContent>
+        <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-bold text-foreground">Email</label>
+            <Input v-model="email" type="email" placeholder="you@example.com" />
+          </div>
 
-        <!-- Email field -->
-        <div class="mb-4">
-          <label class="block text-sm font-bold mb-1" style="color: var(--color-text)">
-            Email
-          </label>
-          <input
-            v-model="email"
-            type="email"
-            placeholder="you@example.com"
-            class="w-full px-3 py-2 border-2 font-mono text-sm outline-none"
-            style="
-              border-color: var(--color-border);
-              background-color: var(--color-bg);
-              color: var(--color-text);
-            "
-          />
-        </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-bold text-foreground">Password</label>
+            <Input v-model="password" type="password" placeholder="••••••••" />
+          </div>
 
-        <!-- Password field -->
-        <div class="mb-6">
-          <label class="block text-sm font-bold mb-1" style="color: var(--color-text)">
-            Password
-          </label>
-          <input
-            v-model="password"
-            type="password"
-            placeholder="••••••••"
-            class="w-full px-3 py-2 border-2 font-mono text-sm outline-none"
-            style="
-              border-color: var(--color-border);
-              background-color: var(--color-bg);
-              color: var(--color-text);
-            "
-          />
-        </div>
+          <div
+            v-if="errorMessage"
+            class="px-3 py-2 border-2 text-sm font-bold"
+            style="border-color: var(--color-border); background-color: var(--color-accent); color: var(--color-accent-text);"
+          >
+            {{ errorMessage }}
+          </div>
 
-        <div
-          v-if="errorMessage"
-          class="mb-4 px-3 py-2 border-2 text-sm font-bold"
-          style="border-color: var(--color-border); background-color: var(--color-accent); color: var(--color-accent-text);"
-        >
-          {{ errorMessage }}
-        </div>
+          <Button type="submit" class="w-full mt-2">SIGN IN</Button>
+        </form>
+      </CardContent>
 
-        <!-- Submit button -->
-        <button
-          type="submit"
-          class="w-full py-2 font-black text-sm border-2 cursor-pointer"
-          style="
-            background-color: var(--color-accent);
-            color: var(--color-accent-text);
-            border-color: var(--color-border);
-            box-shadow: var(--shadow-brutal);
-          "
-        >
-          SIGN IN
-        </button>
-      </form>
-
-      <!-- Register link -->
-      <p class="mt-6 text-sm text-center" style="color: var(--color-text)">
-        Don't have an account?
-        <RouterLink to="/register" class="font-bold underline">Register</RouterLink>
-      </p>
-    </div>
+      <CardFooter class="justify-center">
+        <p class="text-sm text-foreground">
+          Don't have an account?
+          <RouterLink to="/register" class="font-bold underline">Register</RouterLink>
+        </p>
+      </CardFooter>
+    </Card>
   </div>
 </template>

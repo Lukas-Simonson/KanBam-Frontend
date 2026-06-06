@@ -1,4 +1,5 @@
 [data-theme="brutal-light"] {
+  /* App variables */
   --color-bg: #fafaf8;
   --color-surface: #ffffff;
   --color-border: #0a0a0a;
@@ -6,9 +7,32 @@
   --color-accent: #ffe93e;
   --color-accent-text: #0a0a0a;
   --shadow-brutal: 4px 4px 0px var(--color-border);
+
+  /* shadcn variable overrides */
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --border: var(--color-border);
+  --input: var(--color-border);
+  --primary: var(--color-accent);
+  --primary-foreground: var(--color-accent-text);
+  --muted: var(--color-surface);
+  --muted-foreground: var(--color-text);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-text);
+  --secondary: var(--color-surface);
+  --secondary-foreground: var(--color-text);
+
+  /* neobrutalism-vue variables */
+  --color-main: var(--color-accent);
+  --color-main-foreground: var(--color-accent-text);
+  --color-secondary-background: var(--color-surface);
+  --shadow-shadow: var(--shadow-brutal);
 }
 
 [data-theme="brutal-dark"] {
+  /* App variables */
   --color-bg: #1a2235;
   --color-surface: #243048;
   --color-border: #0a0a0a;
@@ -16,9 +40,32 @@
   --color-accent: #00e5ff;
   --color-accent-text: #0a0a0a;
   --shadow-brutal: 4px 4px 0px var(--color-border);
+
+  /* shadcn variable overrides */
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --border: var(--color-border);
+  --input: var(--color-border);
+  --primary: var(--color-accent);
+  --primary-foreground: var(--color-accent-text);
+  --muted: var(--color-surface);
+  --muted-foreground: var(--color-text);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-text);
+  --secondary: var(--color-surface);
+  --secondary-foreground: var(--color-text);
+
+  /* neobrutalism-vue variables */
+  --color-main: var(--color-accent);
+  --color-main-foreground: var(--color-accent-text);
+  --color-secondary-background: var(--color-surface);
+  --shadow-shadow: var(--shadow-brutal);
 }
 
 [data-theme="brutal-red"] {
+  /* App variables */
   --color-bg: #fdf6ec;
   --color-surface: #ffffff;
   --color-border: #0a0a0a;
@@ -26,9 +73,32 @@
   --color-accent: #cc0000;
   --color-accent-text: #ffffff;
   --shadow-brutal: 4px 4px 0px var(--color-border);
+
+  /* shadcn variable overrides */
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --border: var(--color-border);
+  --input: var(--color-border);
+  --primary: var(--color-accent);
+  --primary-foreground: var(--color-accent-text);
+  --muted: var(--color-surface);
+  --muted-foreground: var(--color-text);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-text);
+  --secondary: var(--color-surface);
+  --secondary-foreground: var(--color-text);
+
+  /* neobrutalism-vue variables */
+  --color-main: var(--color-accent);
+  --color-main-foreground: var(--color-accent-text);
+  --color-secondary-background: var(--color-surface);
+  --shadow-shadow: var(--shadow-brutal);
 }
 
 [data-theme="brutal-blue"] {
+  /* App variables */
   --color-bg: #eef2ff;
   --color-surface: #ffffff;
   --color-border: #0a0a2a;
@@ -36,4 +106,26 @@
   --color-accent: #ff6600;
   --color-accent-text: #ffffff;
   --shadow-brutal: 4px 4px 0px var(--color-border);
+
+  /* shadcn variable overrides */
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --border: var(--color-border);
+  --input: var(--color-border);
+  --primary: var(--color-accent);
+  --primary-foreground: var(--color-accent-text);
+  --muted: var(--color-surface);
+  --muted-foreground: var(--color-text);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-text);
+  --secondary: var(--color-surface);
+  --secondary-foreground: var(--color-text);
+
+  /* neobrutalism-vue variables */
+  --color-main: var(--color-accent);
+  --color-main-foreground: var(--color-accent-text);
+  --color-secondary-background: var(--color-surface);
+  --shadow-shadow: var(--shadow-brutal);
 }

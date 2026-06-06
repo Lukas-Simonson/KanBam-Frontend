@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/card'
+import { Input } from '@/components/input'
+import { Button } from '@/components/button'
 
 const authStore = useAuthStore()
 
-// TODO: add refs for name, email, password, and errorMessage
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
 
-// Password validation rules (must all be true before submitting)
-const hasMinLength = computed(() => password.value.length >= 8 )
+const hasMinLength = computed(() => password.value.length >= 8)
 const hasUppercase = computed(() => /[A-Z]/.test(password.value))
 const hasLowercase = computed(() => /[a-z]/.test(password.value))
 const hasDigit = computed(() => /\d/.test(password.value))
@@ -21,126 +22,79 @@ const isPasswordValid = computed(() =>
 )
 
 async function handleSubmit() {
-  if (!isPasswordValid.value) { return }
+  if (!isPasswordValid.value) return
   try {
     await authStore.register(name.value, email.value, password.value)
-  } catch(error) {
+  } catch (error) {
     const code = (error as { response?: { data?: { code?: string } } }).response?.data?.code
-    if (code == 'EMAIL_TAKEN') {
-      errorMessage.value = "This email is already in use, did you mean to login instead?"
+    if (code === 'EMAIL_TAKEN') {
+      errorMessage.value = 'This email is already in use, did you mean to login instead?'
     } else {
-      errorMessage.value = "An unexpected error occurred"
+      errorMessage.value = 'An unexpected error occurred'
     }
   }
 }
-
 </script>
 
 <template>
   <div class="min-h-screen flex items-center justify-center" style="background-color: var(--color-bg)">
-    <div
-      class="w-full max-w-md p-8 border-2"
-      style="
-        background-color: var(--color-surface);
-        border-color: var(--color-border);
-        box-shadow: var(--shadow-brutal);
-      "
-    >
-      <!-- Title -->
-      <h1 class="text-3xl font-black mb-2" style="color: var(--color-text)">KanBam</h1>
-      <p class="text-sm font-bold mb-8" style="color: var(--color-text)">Create an account</p>
+    <Card class="w-full max-w-md">
+      <CardHeader>
+        <CardTitle class="text-3xl font-black">KanBam</CardTitle>
+        <CardDescription>Create an account</CardDescription>
+      </CardHeader>
 
-      <form @submit.prevent="handleSubmit">
+      <CardContent>
+        <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-bold text-foreground">Name</label>
+            <Input v-model="name" type="text" placeholder="Shrek" />
+          </div>
 
-        <!-- Name field -->
-        <div class="mb-4">
-          <label class="block text-sm font-bold mb-1" style="color: var(--color-text)">
-            Name
-          </label>
-          <input
-            v-model="name"
-            type="text"
-            placeholder="Shrek"
-            class="w-full px-3 py-2 border-2 font-mono text-sm outline-none"
-            style="border-color: var(--color-border); background-color: var(--color-bg); color: var(--color-text);"
-          />
-        </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-bold text-foreground">Email</label>
+            <Input v-model="email" type="email" placeholder="you@example.com" />
+          </div>
 
-        <!-- Email field -->
-        <div class="mb-4">
-          <label class="block text-sm font-bold mb-1" style="color: var(--color-text)">
-            Email
-          </label>
-          <input
-            v-model="email"
-            type="email"
-            placeholder="you@example.com"
-            class="w-full px-3 py-2 border-2 font-mono text-sm outline-none"
-            style="border-color: var(--color-border); background-color: var(--color-bg); color: var(--color-text);"
-          />
-        </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-bold text-foreground">Password</label>
+            <Input v-model="password" type="password" placeholder="••••••••" />
+            <ul class="mt-1 space-y-1">
+              <li
+                v-for="rule in [
+                  { label: 'At least 8 characters', valid: hasMinLength },
+                  { label: 'Uppercase letter', valid: hasUppercase },
+                  { label: 'Lowercase letter', valid: hasLowercase },
+                  { label: 'Number', valid: hasDigit },
+                  { label: 'Special character (@$!%*?&^)', valid: hasSpecial },
+                ]"
+                :key="rule.label"
+                class="text-xs font-bold"
+                :style="{ color: rule.valid ? 'green' : 'var(--color-text)', opacity: rule.valid ? 1 : 0.5 }"
+              >
+                {{ rule.valid ? '✓' : '○' }} {{ rule.label }}
+              </li>
+            </ul>
+          </div>
 
-        <!-- Password field -->
-        <div class="mb-4">
-          <label class="block text-sm font-bold mb-1" style="color: var(--color-text)">
-            Password
-          </label>
-          <input
-            v-model="password"
-            type="password"
-            placeholder="••••••••"
-            class="w-full px-3 py-2 border-2 font-mono text-sm outline-none"
-            style="border-color: var(--color-border); background-color: var(--color-bg); color: var(--color-text);"
-          />
+          <div
+            v-if="errorMessage"
+            class="px-3 py-2 border-2 text-sm font-bold"
+            style="border-color: var(--color-border); background-color: var(--color-accent); color: var(--color-accent-text);"
+          >
+            {{ errorMessage }}
+          </div>
 
-          <!-- Password rule indicators — these update live as the user types -->
-          <ul class="mt-2 space-y-1">
-            <li
-              v-for="rule in [
-                { label: 'At least 8 characters', valid: hasMinLength },
-                { label: 'Uppercase letter', valid: hasUppercase },
-                { label: 'Lowercase letter', valid: hasLowercase },
-                { label: 'Number', valid: hasDigit },
-                { label: 'Special character (@$!%*?&^)', valid: hasSpecial },
-              ]"
-              :key="rule.label"
-              class="text-xs font-bold"
-              :style="{ color: rule.valid ? 'green' : 'var(--color-text)', opacity: rule.valid ? 1 : 0.5 }"
-            >
-              {{ rule.valid ? '✓' : '○' }} {{ rule.label }}
-            </li>
-          </ul>
-        </div>
+          <Button type="submit" class="w-full mt-2">REGISTER</Button>
+        </form>
+      </CardContent>
 
-        <!-- Error message -->
-        <div
-          v-if="errorMessage"
-          class="mb-4 px-3 py-2 border-2 text-sm font-bold"
-          style="border-color: var(--color-border); background-color: var(--color-accent); color: var(--color-accent-text);"
-        >
-           {{ errorMessage }}
-        </div>
-
-        <!-- Submit button -->
-        <button
-          type="submit"
-          class="w-full py-2 font-black text-sm border-2 cursor-pointer"
-          style="
-            background-color: var(--color-accent);
-            color: var(--color-accent-text);
-            border-color: var(--color-border);
-            box-shadow: var(--shadow-brutal);
-          "
-        >
-          REGISTER
-        </button>
-      </form>
-
-      <!-- Login link -->
-      <p class="mt-6 text-sm text-center" style="color: var(--color-text)">
-        Already have an account?
-        <RouterLink to="/login" class="font-bold underline">Sign in</RouterLink>
-      </p>
-    </div>
+      <CardFooter class="justify-center">
+        <p class="text-sm text-foreground">
+          Already have an account?
+          <RouterLink to="/login" class="font-bold underline">Sign in</RouterLink>
+        </p>
+      </CardFooter>
+    </Card>
   </div>
 </template>

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useWorkspaceStore } from '@/stores/workspace'
+import { useBoardStore } from '@/stores/board'
 import {
   Sidebar,
   SidebarHeader,
@@ -28,6 +29,7 @@ import {
 const route = useRoute()
 const authStore = useAuthStore()
 const workspaceStore = useWorkspaceStore()
+const boardStore = useBoardStore()
 
 const activeWorkspaceId = computed(() => route.params.workspaceId as string | undefined)
 const activeWorkspace = computed(() =>
@@ -110,6 +112,31 @@ const activeWorkspace = computed(() =>
               <SidebarMenuButton as-child>
                 <RouterLink :to="`/workspaces/${activeWorkspaceId}/settings`" class="no-underline">
                   <span>Settings</span>
+                </RouterLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+
+      <!-- Board list — shown when inside a workspace and boards exist -->
+      <SidebarGroup v-if="activeWorkspaceId && boardStore.boards.length > 0">
+        <SidebarGroupLabel>Boards</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem
+              v-for="board in boardStore.boards.filter(b => !b.isArchived)"
+              :key="board.id"
+            >
+              <SidebarMenuButton as-child>
+                <RouterLink :to="`/workspaces/${activeWorkspaceId}/boards/${board.id}`" class="no-underline">
+                  <span
+                    class="inline-flex items-center justify-center w-5 h-5 border text-xs font-black shrink-0"
+                    style="border-color: var(--color-border);"
+                  >
+                    {{ board.prefix.charAt(0) }}
+                  </span>
+                  <span>{{ board.title }}</span>
                 </RouterLink>
               </SidebarMenuButton>
             </SidebarMenuItem>

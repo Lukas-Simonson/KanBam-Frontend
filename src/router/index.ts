@@ -26,19 +26,27 @@ const router = createRouter({
       meta: { guestOnly: true }
     },
     {
-      path: '/workspaces',
-      component: () => import('@/views/WorkspaceListView.vue'),
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/workspaces/:workspaceId',
-      component: () => import('@/views/WorkspaceView.vue'),
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/workspaces/:workspaceId/boards/:boardId',
-      component: () => import('@/views/BoardView.vue'),
-      meta: { requiresAuth: true }
+      path: '/',
+      component: () => import('@/views/AppLayout.vue'),
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: 'workspaces',
+          component: () => import('@/views/WorkspaceListView.vue'),
+        },
+        {
+          path: 'workspaces/:workspaceId',
+          component: () => import('@/views/WorkspaceView.vue'),
+        },
+        {
+          path: 'workspaces/:workspaceId/settings',
+          component: () => import('@/views/WorkspaceSettingsView.vue'),
+        },
+        {
+          path: 'workspaces/:workspaceId/boards/:boardId',
+          component: () => import('@/views/BoardView.vue'),
+        },
+      ]
     },
   ],
 })

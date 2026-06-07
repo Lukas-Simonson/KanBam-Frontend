@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 import {
   getWorkspaces,
   getWorkspace,
@@ -18,6 +19,31 @@ export const useWorkspaceStore = defineStore('workspace', () => {
   const workspaces = ref<Workspace[]>([])
   const activeWorkspace = ref<Workspace | null>(null)
   const members = ref<UserRole[]>([])
+
+  // getters
+  const currentUserRole = computed(() => {
+    const auth = useAuthStore()
+    return members.value.find(m => m.id === auth.user?.id)?.role ?? null
+  })
+
+  const isOwner = computed(() => currentUserRole.value === 'owner')
+  const isAdmin = computed(() => currentUserRole.value === 'admin')
+  const canManageWorkspace = computed(() => isOwner.value || isAdmin.value)
+
+  // Returns true if the current user can edit the given member's role
+  // Rules:
+  // - Owner role is always read-only (can't be changed by anyone)
+  // - Users cannot change their own role
+  // - Owners can manage admins, contributors, and viewers
+  // - Admins can only manage contributors and viewers
+  function canManageMember(member: UserRole): boolean {
+    const auth = useAuthStore()
+    if (member.role === 'owner') return false
+    if (member.id === auth.user?.id) return false
+    if (isOwner.value) return true
+    if (isAdmin.value) return member.role === 'contributer' || member.role === 'viewer'
+    return false
+  }
 
   // actions
   async function fetchWorkspaces() {
@@ -71,6 +97,11 @@ export const useWorkspaceStore = defineStore('workspace', () => {
     workspaces,
     activeWorkspace,
     members,
+    currentUserRole,
+    isOwner,
+    isAdmin,
+    canManageWorkspace,
+    canManageMember,
     fetchWorkspaces,
     fetchWorkspace,
     createWorkspace,

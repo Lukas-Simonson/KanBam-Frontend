@@ -43,6 +43,10 @@ const router = createRouter({
           component: () => import('@/views/WorkspaceSettingsView.vue'),
         },
         {
+          path: 'workspaces/:workspaceId/tags',
+          component: () => import('@/views/WorkspaceTagsView.vue'),
+        },
+        {
           path: 'workspaces/:workspaceId/boards/:boardId',
           component: () => import('@/views/BoardView.vue'),
         },

@@ -110,6 +110,13 @@ const activeWorkspace = computed(() =>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton as-child>
+                <RouterLink :to="`/workspaces/${activeWorkspaceId}/tags`" class="no-underline">
+                  <span>Tags</span>
+                </RouterLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton as-child>
                 <RouterLink :to="`/workspaces/${activeWorkspaceId}/settings`" class="no-underline">
                   <span>Settings</span>
                 </RouterLink>
